@@ -93,5 +93,12 @@ class EnrollControllerTest {
                 .andExpect(jsonPath("$[0].quatidade_matriculas").value(1))
                 .andExpect(jsonPath("$[0].email").value("alex@email.com"));
     }
+    
+    @Test
+    void should_retrieve_no_content_if_dont_have_any_enrollment_report() throws Exception {
+        mockMvc.perform(get("/courses/enroll/report")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
 
 }
