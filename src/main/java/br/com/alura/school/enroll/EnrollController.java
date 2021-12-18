@@ -5,6 +5,8 @@ import static java.lang.String.format;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,7 @@ class EnrollController {
     }
 
     @PostMapping("/courses/{courseCode}/enroll")
-    ResponseEntity<Void> newEnroll(@RequestBody NewEnrollRequest newEnrollRequest,
+    ResponseEntity<Void> newEnroll(@RequestBody @Valid NewEnrollRequest newEnrollRequest,
             @PathVariable("courseCode") String courseCode) {
         String username = newEnrollRequest.getUsername();
 

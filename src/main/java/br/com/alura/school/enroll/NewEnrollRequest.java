@@ -1,12 +1,14 @@
 package br.com.alura.school.enroll;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 class NewEnrollRequest {
 
     @NotBlank
+    @Size(max = 20)
     @JsonProperty
     private final String username;
 
