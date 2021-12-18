@@ -42,7 +42,7 @@ public class Course {
     protected Course() {
     }
 
-    Course(String code, String name, String description) {
+    public Course(String code, String name, String description) {
         this.code = code;
         this.name = name;
         this.description = description;

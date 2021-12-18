@@ -2,7 +2,6 @@ package br.com.alura.school.user;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -42,7 +41,7 @@ public class User {
     protected User() {
     }
 
-    User(String username, String email) {
+    public User(String username, String email) {
         this.username = username;
         this.email = email;
     }
