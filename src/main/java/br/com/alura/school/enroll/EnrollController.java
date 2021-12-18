@@ -39,6 +39,9 @@ class EnrollController {
     @GetMapping("/courses/enroll/report")
     ResponseEntity<List<EnrollResponse>> enrollmentReport() {
         List<EnrollmentReportDto> enrollmentReportDto = enrollRepository.getReport();
+        if (enrollmentReportDto.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "No enrollments found");
+
         return ResponseEntity.ok(EnrollResponse.convertFromDto(enrollmentReportDto));
     }
 
