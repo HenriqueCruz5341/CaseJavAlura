@@ -1,35 +1,46 @@
 package br.com.alura.school.course;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import br.com.alura.school.enroll.Enroll;
 
 @Entity
-class Course {
+public class Course {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Size(max=10)
+    @Size(max = 10)
     @NotBlank
     @Column(nullable = false, unique = true)
     private String code;
 
-    @Size(max=20)
+    @Size(max = 20)
     @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
 
     private String description;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Enroll> enrolls;
+
     @Deprecated
-    protected Course() { }
+    protected Course() {
+    }
 
     Course(String code, String name, String description) {
         this.code = code;
@@ -47,6 +58,10 @@ class Course {
 
     String getDescription() {
         return description;
+    }
+
+    public List<Enroll> getEnrolls() {
+        return enrolls;
     }
 
 }

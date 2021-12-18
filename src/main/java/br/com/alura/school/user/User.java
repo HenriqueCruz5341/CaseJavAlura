@@ -1,23 +1,31 @@
 package br.com.alura.school.user;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import br.com.alura.school.enroll.Enroll;
 
 @Entity
-class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Size(max=20)
+    @Size(max = 20)
     @NotBlank
     @Column(nullable = false, unique = true)
     private String username;
@@ -27,20 +35,28 @@ class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Enroll> enrolls;
+
     @Deprecated
-    protected User() {}
+    protected User() {
+    }
 
     User(String username, String email) {
         this.username = username;
         this.email = email;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
     String getEmail() {
         return email;
+    }
+
+    public List<Enroll> getEnrolls() {
+        return enrolls;
     }
 
 }
