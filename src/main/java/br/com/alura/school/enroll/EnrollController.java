@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.alura.school.course.Course;
 import br.com.alura.school.course.CourseRepository;
+import br.com.alura.school.support.dto.EnrollmentReportDto;
 import br.com.alura.school.user.User;
 import br.com.alura.school.user.UserRepository;
 
@@ -35,10 +36,10 @@ class EnrollController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/enrolls")
-    ResponseEntity<List<Enroll>> allEnrolls() {
-        List<Enroll> enrolls = enrollRepository.findAll();
-        return ResponseEntity.ok(enrolls);
+    @GetMapping("/courses/enroll/report")
+    ResponseEntity<List<EnrollResponse>> enrollmentReport() {
+        List<EnrollmentReportDto> enrollmentReportDto = enrollRepository.getReport();
+        return ResponseEntity.ok(EnrollResponse.convertFromDto(enrollmentReportDto));
     }
 
     @PostMapping("/courses/{courseCode}/enroll")
