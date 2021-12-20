@@ -23,82 +23,82 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class EnrollControllerTest {
 
-    private final ObjectMapper jsonMapper = new ObjectMapper();
+        private final ObjectMapper jsonMapper = new ObjectMapper();
 
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Autowired
-    private CourseRepository courseRepository;
+        @Autowired
+        private CourseRepository courseRepository;
 
-    @Test
-    void should_add_new_enroll() throws Exception {
-        userRepository.save(new User("alex", "alex@email.com"));
-        courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
-        NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
+        @Test
+        void should_add_new_enroll() throws Exception {
+                userRepository.save(new User("alex", "alex@email.com"));
+                courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
+                NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
 
-        mockMvc.perform(post("/courses/java-1/enroll")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
-                .andExpect(status().isCreated());
-    }
+                mockMvc.perform(post("/courses/java-1/enroll")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
+                                .andExpect(status().isCreated());
+        }
 
-    @Test
-    void should_return_bad_request_when_user_enroll_more_than_one_time_in_same_course() throws Exception {
-        userRepository.save(new User("alex", "alex@email.com"));
-        courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
+        @Test
+        void should_return_bad_request_when_user_enroll_more_than_one_time_in_same_course() throws Exception {
+                userRepository.save(new User("alex", "alex@email.com"));
+                courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
 
-        NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
+                NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
 
-        mockMvc.perform(post("/courses/java-1/enroll")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(newEnrollRequest)));
+                mockMvc.perform(post("/courses/java-1/enroll")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonMapper.writeValueAsString(newEnrollRequest)));
 
-        mockMvc.perform(post("/courses/java-1/enroll")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
-                .andExpect(status().isBadRequest());
-    }
+                mockMvc.perform(post("/courses/java-1/enroll")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
+                                .andExpect(status().isBadRequest());
+        }
 
-    @Test
-    void should_return_bad_request_when_username_is_invalid() throws Exception {
-        userRepository.save(new User("alex", "alex@email.com"));
-        courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
+        @Test
+        void should_return_bad_request_when_username_is_invalid() throws Exception {
+                userRepository.save(new User("alex", "alex@email.com"));
+                courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
 
-        NewEnrollRequest newEnrollRequest = new NewEnrollRequest("nomedeusuariomuitomuitogrande", "");
+                NewEnrollRequest newEnrollRequest = new NewEnrollRequest("nomedeusuariomuitomuitogrande", "");
 
-        mockMvc.perform(post("/courses/java-1/enroll")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
-                .andExpect(status().isBadRequest());
-    }
+                mockMvc.perform(post("/courses/java-1/enroll")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonMapper.writeValueAsString(newEnrollRequest)))
+                                .andExpect(status().isBadRequest());
+        }
 
-    @Test
-    void should_retrieve_an_enrollment_report() throws Exception {
-        userRepository.save(new User("alex", "alex@email.com"));
-        courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
+        @Test
+        void should_retrieve_an_enrollment_report() throws Exception {
+                userRepository.save(new User("alex", "alex@email.com"));
+                courseRepository.save(new Course("java-1", "Java OO", "Java and O..."));
 
-        NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
+                NewEnrollRequest newEnrollRequest = new NewEnrollRequest("alex", "");
 
-        mockMvc.perform(post("/courses/java-1/enroll")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.writeValueAsString(newEnrollRequest)));
+                mockMvc.perform(post("/courses/java-1/enroll")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(jsonMapper.writeValueAsString(newEnrollRequest)));
 
-        mockMvc.perform(get("/courses/enroll/report"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].quatidade_matriculas").value(1))
-                .andExpect(jsonPath("$[0].email").value("alex@email.com"));
-    }
-    
-    @Test
-    void should_retrieve_no_content_if_dont_have_any_enrollment_report() throws Exception {
-        mockMvc.perform(get("/courses/enroll/report")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-    }
+                mockMvc.perform(get("/courses/enroll/report"))
+                                .andExpect(status().isOk())
+                                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                                .andExpect(jsonPath("$[0].quantidade_matriculas").value(1))
+                                .andExpect(jsonPath("$[0].email").value("alex@email.com"));
+        }
+
+        @Test
+        void should_retrieve_no_content_if_dont_have_any_enrollment_report() throws Exception {
+                mockMvc.perform(get("/courses/enroll/report")
+                                .accept(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNoContent());
+        }
 
 }
