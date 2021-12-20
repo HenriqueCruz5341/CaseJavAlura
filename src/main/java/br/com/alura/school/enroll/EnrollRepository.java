@@ -13,6 +13,6 @@ public interface EnrollRepository extends JpaRepository<Enroll, Long> {
 
     List<Enroll> findByUserUsernameAndCourseCode(String username, String courseCode);
 
-    @Query("SELECT new br.com.alura.school.support.dto.EnrollmentReportDto(COUNT(c.code), u.email) FROM enroll e JOIN e.user u JOIN e.course c GROUP BY u.email ORDER BY COUNT(c.code) DESC")
+    @Query("SELECT new br.com.alura.school.support.dto.EnrollmentReportDto(COUNT(c.code), u.email) FROM Enroll e JOIN e.user u JOIN e.course c GROUP BY u.email ORDER BY COUNT(c.code) DESC")
     List<EnrollmentReportDto> getReport();
 }

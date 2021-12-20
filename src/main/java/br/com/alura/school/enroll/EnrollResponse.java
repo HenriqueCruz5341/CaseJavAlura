@@ -12,10 +12,10 @@ class EnrollResponse {
     @JsonProperty
     private final String email;
 
-    @JsonProperty
-    private final Integer quantidadeMatriculas;
+    @JsonProperty("quantidade_matriculas")
+    private final Long quantidadeMatriculas;
 
-    EnrollResponse(String email, Integer quantidadeMatriculas) {
+    EnrollResponse(String email, Long quantidadeMatriculas) {
         this.email = email;
         this.quantidadeMatriculas = quantidadeMatriculas;
     }
